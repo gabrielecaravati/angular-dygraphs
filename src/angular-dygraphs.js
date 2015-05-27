@@ -17,7 +17,7 @@ angular.module("angular-dygraphs", [
                 dyLegend: '=legend'
             },
             template: '<div class="ng-dygraphs">' +                     // Outer div to hold the whole directive
-                '<div class="graph" style="position: absolute; width: calc(100% - 350px); height: calc(100% - 15px); margin-top: 5px; margin-bottom: 15px;"></div>' +                           // Div for graph
+                '<div class="graph" style="position: absolute; width: 100%; height: 100%;"></div>' +                           // Div for graph
                 '<div class="legend" ng-if="LegendEnabled">' +          // Div for legend
                 '<div class="series-container">' +                      // Div for series
                 '<div ng-repeat="series in legendSeries" class="series">' +
@@ -221,3 +221,4 @@ angular.module("angular-dygraphs", [
             }
         };
     }]);
+
