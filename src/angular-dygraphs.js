@@ -8,16 +8,16 @@
 angular.module("angular-dygraphs", [
     'ngSanitize'
 ])
-    .directive('ngDygraphs', ['$window', '$sce', function ($window, $sce) {
+    .directive('ngDygraphs', ['$window', '$sce', '$rootScope', function ($window, $sce, $rootScope) {
         return {
             restrict: 'E',
             scope: { // Isolate scope
                 data: '=',
                 options: '=',
-                legend: '=?'
+                dyLegend: '=legend'
             },
             template: '<div class="ng-dygraphs">' +                     // Outer div to hold the whole directive
-                '<div class="graph"></div>' +                           // Div for graph
+                '<div class="graph" style="position: absolute; width: calc(100% - 350px); height: calc(100% - 15px); margin-top: 5px; margin-bottom: 15px;"></div>' +                           // Div for graph
                 '<div class="legend" ng-if="LegendEnabled">' +          // Div for legend
                 '<div class="series-container">' +                      // Div for series
                 '<div ng-repeat="series in legendSeries" class="series">' +
@@ -53,8 +53,8 @@ angular.module("angular-dygraphs", [
                     options.file = scope.data;
                     options.highlightCallback = scope.highlightCallback;
                     options.unhighlightCallback = scope.unhighlightCallback;
-                    if(options.showPopover === undefined)
-                        options.showPopover = true;
+                   // if(options.showPopover === undefined)
+                        options.showRoller = false;
 
                     if (scope.legend !== undefined) {
                         options.labelsDivWidth = 0;
@@ -95,6 +95,7 @@ angular.module("angular-dygraphs", [
                 });
                 
                 scope.$watch("options", function(newOptions){
+                    newOptions = newOptions || {};
                     graph.updateOptions(newOptions);
                     resize();
                 }, true);
@@ -205,28 +206,17 @@ angular.module("angular-dygraphs", [
 
                 var w = angular.element($window);
                 w.bind('resize', function () {
-                    resize();
+                    graph.resize();
+                });
+
+                $rootScope.$on('panel:active', function(id, panel, direction){
+                    if(direction === 'bottom'){
+                        graph.resize();
+                    }
                 });
 
                 function resize() {
-                    var maxWidth = 0;
-                    element.find('div.series').each(function () {
-                        var itemWidth = $(this).width();
-                        maxWidth = Math.max(maxWidth, itemWidth)
-                    });
-                    element.find('div.series').each(function () {
-                        $(this).width(maxWidth);
-                    });
-
-                    var legendHeight = element.find('div.legend').outerHeight(true);
-                    console.log("Heights", legendHeight, parent.height(), parent.outerHeight(true),
-                        $(mainDiv).outerHeight(), element.height(), $(legendDiv).height(),
-                        $(legendDiv).outerHeight(true));
-                    graph.resize(parent.width(), parent.height() - legendHeight);
-                    chartArea = $(chartDiv).offset();
-                    chartArea.bottom = chartArea.top + parent.height() - legendHeight;
-                    chartArea.right = chartArea.left + parent.width();
-                    console.log("Position",chartArea);
+                    graph.resize();
                 }
             }
         };
