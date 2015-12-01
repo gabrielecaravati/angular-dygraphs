@@ -1,4 +1,6 @@
-import Dygraph from 'dygraphs';
+(function(){
+
+    var Dygraph = require('dygraphs');
 
 /**
  * dygraph directive for AngularJS
@@ -223,4 +225,5 @@ angular.module("angular-dygraphs", [
             }
         };
     }]);
-
+    
+})();
