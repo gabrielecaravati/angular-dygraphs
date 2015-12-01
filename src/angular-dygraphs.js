@@ -1,3 +1,5 @@
+import Dygraph from 'dygraphs';
+
 /**
  * dygraph directive for AngularJS
  *
