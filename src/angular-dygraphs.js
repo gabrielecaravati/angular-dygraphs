@@ -14,7 +14,8 @@ angular.module("angular-dygraphs", [
             scope: { // Isolate scope
                 data: '=',
                 options: '=',
-                legend: '=?'
+                legend: '=?',
+				dygraphObj: '=?'
             },
             template: '<div class="ng-dygraphs">' +                     // Outer div to hold the whole directive
                 '<div class="graph"></div>' +                           // Div for graph
@@ -45,7 +46,10 @@ angular.module("angular-dygraphs", [
                 var popoverPos = false;
 
                 var graph = new Dygraph(chartDiv, scope.data, scope.options);
-                scope.$watch("data", function () {
+				
+				scope.dygraphObj = graph;
+				
+				scope.$watch("data", function () {
                     var options = scope.options;
                     if (options === undefined) {
                         options = {};
