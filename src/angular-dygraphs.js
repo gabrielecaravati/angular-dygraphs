@@ -55,10 +55,10 @@ angular.module("angular-dygraphs", [
                         options = {};
                     }
                     options.file = scope.data;
-                    options.highlightCallback = scope.highlightCallback;
-                    options.unhighlightCallback = scope.unhighlightCallback;
-                    if(options.showPopover === undefined)
-                        options.showPopover = true;
+                    //options.highlightCallback = scope.highlightCallback;
+                    //options.unhighlightCallback = scope.unhighlightCallback;
+                    //if(options.showPopover === undefined)
+					options.showPopover = true;
 
                     if (scope.legend !== undefined) {
                         options.labelsDivWidth = 0;
